@@ -1,0 +1,133 @@
+﻿@model MVCManukauTech.Models.IndexViewModel
+@{
+    ViewBag.Title = "Manage your account";
+}
+
+<h2>@ViewBag.Title.</h2>
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div class="row">
+    <div class="col-md-8">
+        <p>
+            @if (Model.HasPassword)
+            {
+                @Html.ActionLink("Change your password", "ChangePassword")
+            }
+            else
+            {
+                @Html.ActionLink("Pick a password", "SetPassword")
+            }
+        </p>
+        <p>
+            Phone Number: @(Model.PhoneNumber ?? "None") [
+            @if (Model.PhoneNumber != null)
+            {
+                @Html.ActionLink("Change", "AddPhoneNumber")
+                @: &nbsp;|&nbsp;
+                @Html.ActionLink("Remove", "RemovePhoneNumber")
+            }
+            else
+            {
+                @Html.ActionLink("Add", "AddPhoneNumber")
+            }
+            ]
+        </p>
+        <p>
+            External Logins: @Model.Logins.Count
+            @Html.ActionLink("[Manage]", "ManageLogins")
+        </p>
+        @if (Model.TwoFactor)
+        {
+            <form method="post" action="/Manage/DisableTFA">
+                <p>
+                    Two factor is currently enabled:
+                    <input type="submit" value="Disable" class="btn btn-default"/>
+                </p>
+            </form>
+        }
+        else
+        {
+            <form method="post" action="/Manage/EnableTFA">
+                <p>
+                    Two factor is currently disabled:
+                    <input type="submit" value="Enable" class="btn btn-default"/>
+                </p>
+            </form>
+        }
+        @if (Model.BrowserRemembered)
+        {
+            <form method="post" action="/Manage/ForgetBrowser">
+                <p>
+                    Browser is curently remembered for two factor:
+                    <input type="submit" value="Forget Browser" class="btn btn-default" />
+                </p>
+            </form>
+        }
+        else
+        {
+            <form method="post" action="/Manage/RememberBrowser">
+                <p>
+                    Browser is curently not remembered for two factor:
+                    <input type="submit" value="Remember Browser" class="btn btn-default"/>
+                </p>
+            </form>
+        }
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-default" id="submit" style="display:none" />
+            </div>
+        </div>
+        @*100917 display member state*@
+        Member state: @Session["UserRole"] <br /><br />
+        @*100917 if is associate member than display join or renew button*@
+        @if (@ViewData["JoinOrRenew"].ToString() == "Yes")
+        {
+            <div>
+                Join Premium Club:
+                Fee: $30 per year
+                12% Discount for all products
+                <div id="paypal-button"></div>
+            </div>
+        }
+      
+        @*100917 paypal *@
+
+        <script>
+            paypal.Button.render({
+
+                env: 'sandbox', // Or 'sandbox'
+                locale: 'en_AU',
+                client: {
+                    sandbox: 'AWCmmZidyDoY_FPeNPC0zT7dqw0xsUwlSF2rurFdDaAEyi1UHGBYr1OfNIXF1fF3Zua8Va-T-NCk6TAv',
+                    production: 'xxxxxxxxx'
+                },
+
+                commit: true, // Show a 'Pay Now' button
+
+                payment: function (data, actions) {
+                    return actions.payment.create({
+                        payment: {
+                            transactions: [
+                                {
+                                    //set up join member  fee $30
+                                    amount: { total: 30, currency: 'NZD' }
+                                }
+                            ]
+                        }
+                    });
+                },
+
+                onAuthorize: function (data, actions) {
+                    return actions.payment.execute().then(function (payment) {
+                        alert("Payment success!");
+                        //110917 redirect to another page 
+                        //ref: https://stackoverflow.com/questions/503093/how-to-redirect-to-another-webpage
+                        window.location.replace("http://localhost:7142/manage/JoinSuccess");
+                    });
+                }
+
+            }, '#paypal-button');
+        </script>
+    </div>
+</div>

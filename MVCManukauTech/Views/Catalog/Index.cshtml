@@ -1,0 +1,98 @@
+﻿@model IEnumerable<MVCManukauTech.Models.Product>
+
+@{
+    //Are we showing all the products or only one category?
+    if (ViewBag.CategoryName == null)
+    {
+        ViewBag.Title = "Catalog";
+    }
+    else
+    { 
+        ViewBag.Title = "Catalog - " + ViewBag.CategoryName;
+    }
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Image
+        </th>
+        <th>
+            Unit Cost
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Category
+        </th>
+        <th></th>
+    </tr>
+    
+@foreach (var item in Model)
+{
+    
+    <tr>
+        <td>
+            @item.Title
+        </td>
+        <td>
+            @*100917*@
+            @*ref:https://pixabay.com/ja/%E6%9C%AC-%E7%B7%91-%E5%8E%9A-%E8%AB%96%E6%96%87-%E3%82%AA%E3%83%AC%E3%83%B3%E3%82%B8-%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3-%E6%9B%B8%E3%81%8B%E3%82%8C%E3%81%BE%E3%81%97%E3%81%9F-%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88-35811/*@
+            <img src="~/Content/images/book.png" style="width:100px"/>
+        </td>
+        <td style="text-align: right">
+            @item.UnitCost
+        </td>
+        <td>
+            @item.Description
+        </td>
+        <td>
+            @item.Category.CategoryName
+        </td>
+        <td>
+            <input type="button" value="Add to Cart" onclick="NavCart('@item.ProductId')" />
+        </td>
+        <td>
+            <input type="button" value="Details" onclick="NavDetails('@item.ProductId')" />
+        </td>
+    </tr>
+}
+    
+</table>
+@*100917
+    get the total number products by category name from the catalogController
+    to ceck how many pages need to create
+    ------ToDo-----
+    further: can using javascript to remove the duplicate code, but no time to rewirte code
+    *@
+<form action="" method="GET" >
+    @if (Int32.Parse(@ViewData["TotalProduct"].ToString()) > 12)
+    {
+        <a href="~/Catalog?CategoryName=@ViewData["CategoryName"]&page=1"><input type="button" value="1" id="page1" /></a>
+        <a href="~/Catalog?CategoryName=@ViewData["CategoryName"]&page=2"><input type="button" value="2" id="page2" /></a>
+        <a href="~/Catalog?CategoryName=@ViewData["CategoryName"]&page=3"><input type="button" value="3" id="page3" /></a>
+    }
+    else if (Int32.Parse(@ViewData["TotalProduct"].ToString()) > 6)
+    {
+        <a href="~/Catalog?CategoryName=@ViewData["CategoryName"]&page=1"><input type="button" value="1" id="page1" /></a>
+        <a href="~/Catalog?CategoryName=@ViewData["CategoryName"]&page=2"><input type="button" value="2" id="page2" /></a>
+    }
+</form>
+<script type="text/javascript">
+
+    function NavDetails(ProductId)
+    {
+        window.location.replace("/Catalog/Details?ProductId=" + ProductId);
+    }
+
+    function NavCart(ProductId) {
+        window.location.replace("/OrderDetails/ShoppingCart?ProductId=" + ProductId);
+    }
+</script>

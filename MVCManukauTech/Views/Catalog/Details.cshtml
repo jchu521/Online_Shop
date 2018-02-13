@@ -1,0 +1,72 @@
+﻿@model MVCManukauTech.Models.Product
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Name
+        </dt>
+
+        <dd>
+            @Model.Name
+        </dd>
+
+        <dt>
+            Description
+        </dt>
+
+        <dd>
+            <div style="float:left">
+                <img src="~/Images/@Model.ImageFileName" style="width:20em" />
+            </div>
+            <div>
+                @Model.Description
+            </div>
+        </dd>
+
+        <dt>
+            UnitCost
+        </dt>
+
+        <dd>
+            @Model.UnitCost
+        </dd>
+
+
+        @{
+            if (Model.IsDownload)
+            {
+                <dt>This Product is available as a download</dt>
+            }
+        }
+
+        
+        <dt>
+            Category Name
+        </dt>
+
+        <dd>
+            @Model.Category.CategoryName
+        </dd>
+
+        <dt></dt>
+        <dd>
+            <input type="button" value="Add to Cart" onclick="NavCart('@Model.ProductId')" />
+        </dd>
+
+    </dl>
+</div>
+
+
+<script type="text/javascript">
+    function NavCart(ProductId) {
+        window.location.replace("/OrderDetails/ShoppingCart?ProductId=" + ProductId);
+    }
+</script>

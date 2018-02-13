@@ -1,0 +1,211 @@
+﻿@model IEnumerable<MVCManukauTech.Models.OrderDetailsQueryForCart>
+
+@{
+    ViewBag.Title = "Shopping Cart";
+    //count lines as cart is built on server, then pass to javascript
+    Int32 initialLineCount = 0;
+}
+
+<h2>Order no @Session["OrderId"]</h2>
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+
+<table class="table">
+    @*1st line*@
+    <tr>
+        <th>
+            Line #
+        </th>
+        <th>
+           Product Id
+        </th>
+        <th>
+            Image
+        </th>
+        <th>
+            Product Name
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+            Unit Cost
+        </th>
+        <th>
+            Subtotal
+        </th>
+    </tr>
+    @*2nd line*@
+@foreach (var item in Model) {
+    String subTotal = Convert.ToDouble(Convert.ToDouble(item.Quantity) * Convert.ToDouble(item.UnitCost)).ToString("#0.00");
+    //assuming here that quantities are always integers.  Needs change for products like tonnes of beer.  Half a tonne can be enough.
+    String quantity = Convert.ToInt32(item.Quantity).ToString();
+    //Note that for some industries you would have more than 2 decimal places - 4 is common - unitcost can be fractional
+    String unitCost = Convert.ToDouble(item.UnitCost).ToString("#0.00");
+    initialLineCount = item.LineNumber;
+    <tr>
+        <td>
+            @item.LineNumber
+        </td>
+        <td>
+            @item.ProductId
+        </td>
+        <td>
+            <img src="~/Content/images/book.png" style="width:100px"/>
+        </td>
+        <td>
+           @item.
+        </td>
+        <td>
+            @*140903 JPC adding width:5em width:7em to control display input field sizes. 
+              That style tag is getting long - TODO move it into css and/or find similar existing bootstrap style*@
+            <input type="number" min="0"  id="quantity_@item.LineNumber quantity" style="text-align:right; width:5em"
+             value="@quantity" maxlength="6"  required onkeyup="xAjaxChangeQuantity(this.value, @item.LineNumber);" />
+        </td>
+        <td>
+            @*TODO - make use of data-unitcost custom attribute to store more precise unitcost 
+              when it goes beyond 2 decimal places
+              ref: http://html5doctor.com/html5-custom-data-attributes/*@
+            <input type="text" id="unitcost_@item.LineNumber" style="text-align:right; width:7em"
+                   value="@unitCost"  data-unitcost="@item.UnitCost"  maxlength="10"  readonly /></td>
+        <td>
+            <input type="text" id="subTotal_@item.LineNumber" style="text-align:right; width:7em"
+                   value="@subTotal" maxlength="10"  readonly />
+        </td>
+    </tr>
+}    @*3rd line*@
+    @*110917  Display Discount if is full member*@
+    @if (@Session["Discount"].ToString() == "Y")
+    {
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="font-weight:bold; text-align:right;">
+                Premium Club Member 12% Discount:
+            </td>
+            <td>
+                <input type="text" id="discount" style="text-align:right; width:7em" readonly />
+            </td>
+        </tr>
+    }
+
+    @*4th line*@
+    @*Display Grand Total in the same table*@
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="font-weight:bold; text-align:right">
+            Grand Total:
+        </td>
+        <td>
+            <input type="text" id="grandTotal" style="text-align:right; width:7em"  readonly />
+        </td>
+    </tr>
+    @*5th line*@
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <input type="button" value="Go To Checkout" onclick="NavCheckout();" />
+        </td>
+    </tr>
+
+</table>
+
+@*140901 JPC hidden fields as handy drop-boxes 
+where C# code can drop values for Javascript to pick up and run with*@
+<input id="hidLineCount" type="hidden" value="@initialLineCount" />
+
+<script type="text/javascript">
+
+    var lineCount = document.getElementById("hidLineCount").value;
+    document.onload = DisplayGrandTotal();
+
+    function NavCheckout() {
+        //Note the way MVC5 does re-routing of links to their controllers so URLs get simpler
+        //The checkout address is "/OrderDetails/Checkout" and NOT "/Views/OrderDetails/Checkout.cshtml"
+        window.location.replace("/OrderDetails/Checkout");
+    }
+
+    function DisplayGrandTotal(e) {
+        //add up the subtotals to get a grand total
+        var grandTotal = 0;
+        for (i = 1; i <= lineCount; i++) {
+            //educ - had i.toString at first, got errors, changed to i.toString() and it is sweet.
+            var oeSubTotal = document.getElementById("subTotal_" + i.toString());
+            grandTotal += oeSubTotal.value * 1;
+        }
+        oeGrandTotal = document.getElementById("grandTotal");
+        /*120917
+            if is full memeber then get 12% discount
+        */
+        oeMemberDiscount = document.getElementById("discount");
+        if ('@Session["Discount"]' == "Y"){
+            oeGrandTotal.value = (grandTotal * 0.88);
+            oeMemberDiscount.value = -(grandTotal * 0.12);
+        } else {
+            oeGrandTotal.value = grandTotal;
+        }
+    }
+
+    function xAjaxChangeQuantity(qty, lineNumber) {
+        //update the server to keep in sync with change here
+        //code source for this is w3schools
+
+        // use parseFloat rather than the more obvious parseInt because of possible future options
+        var quantity = parseFloat(qty);
+        if(isNaN(quantity)) quantity = 0;
+
+        var oeUnitCost = document.getElementById("unitcost_" + lineNumber.toString());
+        var unitCost = parseFloat(oeUnitCost.value);
+        var oeSubTotal = document.getElementById("subTotal_" + lineNumber.toString());
+        oeSubTotal.value = (quantity * unitCost).toString();
+        DisplayGrandTotal();
+        //alert("testing change of value at line " + lineNumber);
+
+        //AJAX!  ref  http://www.w3schools.com/ajax/ajax_xmlhttprequest_create.asp
+        // Start by creating the xmlhttp object in Javascript to replace the older "form" methods
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        } else  {
+            // code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        //Keep it simple and go sync rather than async
+        //NOTE that xmlhttp is a LOT like the "URLLoader" class in Adobe Flash that we study in some other courses
+
+        var requestString = "/OrderDetails/ShoppingCartUpdate";
+        //Javascript does not have the String.Format method of C# but we can get close
+        //and therefore keep to a similar style of code
+        var postString = "Quantity={0}&LineNumber={1}";
+        postString = postString.replace("{0}", quantity);
+        postString = postString.replace("{1}", lineNumber);
+
+        xmlhttp.open("POST",requestString,false);
+        xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xmlhttp.send(postString);
+
+        var response = xmlhttp.responseText;
+        //140903 JPC TODO replace the ugly alert user interface with something better
+        //  alert is very much for early prototyping
+        if(response == "ERROR") {
+            alert("ERROR - please redo the previous data entry");
+        } else {
+            //alert(response);
+        }
+
+    }
+
+</script>

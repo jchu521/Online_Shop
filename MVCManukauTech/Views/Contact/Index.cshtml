@@ -1,0 +1,18 @@
+﻿@model MVCManukauTech.Models.ArticleContent
+@{
+    ViewBag.Title = "Index";
+}
+@*040917
+    TinyMCE for contact index page
+    
+    *@
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<h2>Contact</h2>
+<form id="get-data-form" method="post">
+    @*20-08-17 using editorforadmin.cshtml*@
+    @Html.Partial("EditorForAdmin")
+    @*article id*@
+    <input type="hidden" id="ArticleContentId" name="ArticleContentId" value="2" />
+    @*display content*@
+    <div class="tinymce" id="texteditor">@Html.Raw(@Model.ContentText)</div>
+</form>

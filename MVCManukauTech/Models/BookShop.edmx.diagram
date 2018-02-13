@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="53df8db8d8384898a353935cfc8254c0" Name="Diagram1">
+        <EntityTypeShape EntityType="sdfas01jonathanModel.C__MigrationHistory" Width="1.5" PointX="7.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="sdfas01jonathanModel.ArticleContent" Width="1.5" PointX="9.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="sdfas01jonathanModel.AspNetRole" Width="1.5" PointX="13.125" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="sdfas01jonathanModel.AspNetUserClaim" Width="1.5" PointX="10" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="sdfas01jonathanModel.AspNetUserLogin" Width="1.5" PointX="10" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="sdfas01jonathanModel.AspNetUserRole" Width="1.5" PointX="13" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="sdfas01jonathanModel.AspNetUser" Width="1.5" PointX="7.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="sdfas01jonathanModel.Category" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="sdfas01jonathanModel.OrderDetail" Width="1.5" PointX="5.25" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="sdfas01jonathanModel.Order" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="sdfas01jonathanModel.OrderStatu" Width="1.5" PointX="0.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="sdfas01jonathanModel.Review" Width="1.5" PointX="5.25" PointY="6.75" IsExpanded="true" />
+        <AssociationConnector Association="sdfas01jonathanModel.FK_AspNetUserRoles_AspNetRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="sdfas01jonathanModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="sdfas01jonathanModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="sdfas01jonathanModel.FK_AspNetUserRoles_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="sdfas01jonathanModel.FK_OrderDetails_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="sdfas01jonathanModel.FK_Orders_OrderStatus" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="sdfas01jonathanModel.Product" Width="1.5" PointX="3" PointY="3" />
+        <AssociationConnector Association="sdfas01jonathanModel.FK_Products_Categories" />
+        <AssociationConnector Association="sdfas01jonathanModel.FK_OrderDetails_Products" />
+        <AssociationConnector Association="sdfas01jonathanModel.FK_Reviews_Products" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,38 @@
+Version 3.73 - 20170223
+
+* Remove old database "Database.mdf"
+* Cleanout .vs folder
+* Rollback .NET version from 4.6.2 to 4.5.2
+* Change default MSSQL Data Source from (LocalDB)\ProjectsV13 to (LocalDB)\MSSQLLocalDB
+
+-------------------------
+Version 3.72 - 20170219
+
+Discovering Database Generation has become inconsistent on different machines.
+Therefore now supplying with a database already generated with Identity tables and a role Admin
+Removed some Generation code, simplify what is left.
+
+-------------------------
+Version 3.71 - 20170126
+
+Session Object initialisation in "Global.asax.cs":"protected void Session_Start()" creating an OrderId of 0 like XSpy
+
+-------------------------
+Version 3.7 - 20161122
+
+Discovered that the connection string example for "island" remote database example was causing confusion.
+Difficult for students to adapt for their assignments.
+Students are mostly using LocalDB
+
+Therefore.
+(1) Set this up to use LocalDB
+(2) Provide commented-out connection strings for "island"
+
+
+-------------------------
+Version 3.5
+
+Update "Selenium"
+Include drivers for IE
+
+-------------------------

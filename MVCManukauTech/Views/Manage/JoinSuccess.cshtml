@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "JoinSuccess";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Join Success</h2>
+
+<p>
+    Payment success
+    <br />
+    <br />
+    Member state: @ViewData["UserRole"] 
+</p>
+
+@Html.ActionLink("Back to page", "Index")

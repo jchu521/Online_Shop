@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Web
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCManukauTech", "MVCManukauTech\MVCManukauTech.csproj", "{9EBA158D-DB6D-4C8F-825C-3578FAE5543A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCManukauTech.Tests", "MVCManukauTech.Tests\MVCManukauTech.Tests.csproj", "{CEC5298C-E9DA-4747-8B8A-BA60EFA92218}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9EBA158D-DB6D-4C8F-825C-3578FAE5543A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EBA158D-DB6D-4C8F-825C-3578FAE5543A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EBA158D-DB6D-4C8F-825C-3578FAE5543A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EBA158D-DB6D-4C8F-825C-3578FAE5543A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEC5298C-E9DA-4747-8B8A-BA60EFA92218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEC5298C-E9DA-4747-8B8A-BA60EFA92218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEC5298C-E9DA-4747-8B8A-BA60EFA92218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEC5298C-E9DA-4747-8B8A-BA60EFA92218}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,11 @@
+15 Sep 2014
+
+"D - Fix!"
+
+Database design change - All names ending in ID change to end in Id
+eg
+ProductID --> ProductId
+OrderID --> orderId
+
+ALSO
+In edmx Model - "ReviewID" changed to "ReviewId"
